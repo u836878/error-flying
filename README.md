@@ -1,4 +1,4 @@
-# ErrorFared
+# Error Flying
 
 Watches [Secret Flying's Europe deals page](https://www.secretflying.com/europe-flight-deals/)
 and **emails you a link** whenever a new post with **ERROR FARE** in the title appears.
@@ -54,9 +54,9 @@ checks every 15 minutes on GitHub's servers — your PC can be off.
    ```powershell
    git init
    git add .
-   git commit -m "ErrorFared watcher"
+   git commit -m "Error Flying watcher"
    git branch -M main
-   git remote add origin https://github.com/YOURNAME/errorfared.git
+   git remote add origin https://github.com/YOURNAME/error-flying.git
    git push -u origin main
    ```
 
@@ -93,7 +93,7 @@ $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) `
 [Environment]::SetEnvironmentVariable("RESEND_API_KEY","re_xxx","User")
 [Environment]::SetEnvironmentVariable("TO_EMAIL","you@example.com","User")
 
-Register-ScheduledTask -TaskName "ErrorFared" -Action $action -Trigger $trigger `
+Register-ScheduledTask -TaskName "ErrorFlying" -Action $action -Trigger $trigger `
   -Description "Email me new Secret Flying ERROR FARE deals"
 ```
 

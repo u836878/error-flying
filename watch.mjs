@@ -1,4 +1,4 @@
-// ErrorFared — watches Secret Flying's Europe deals page and emails you a link
+// Error Flying — watches Secret Flying's Europe deals page and emails you a link
 // whenever a NEW post with "ERROR FARE" in the title appears.
 //
 // Run it every 30 min (see README for Windows Task Scheduler setup).
