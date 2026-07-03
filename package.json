@@ -1,0 +1,11 @@
+{
+  "name": "errorfared",
+  "version": "1.0.0",
+  "description": "Emails you a link whenever a new ERROR FARE post appears on Secret Flying's Europe deals page.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node watch.mjs",
+    "dry-run": "node watch.mjs --dry-run"
+  }
+}

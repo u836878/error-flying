@@ -1,0 +1,4 @@
+# NOTE: seen.json is intentionally NOT ignored — the GitHub Actions workflow
+# commits it back to the repo as its memory of already-emailed deals.
+node_modules/
+.env
