@@ -38,6 +38,14 @@ const BROWSER_UA =
 // User-Agent passes -> 200. curl ships with Windows 10/11 and every CI
 // runner, so we shell out to it. Falls back to the free r.jina.ai reader
 // proxy if curl isn't available for some reason.
+// A response only counts as the real page if it contains post links —
+// Cloudflare sometimes serves a bot-challenge page instead (e.g. to
+// datacenter IPs like GitHub Actions runners), which is HTML but has no
+// posts. In that case we fall back to the proxy.
+function looksReal(html) {
+  return html && html.includes("secretflying.com/posts/");
+}
+
 async function fetchPage(url) {
   try {
     const { stdout } = await execFileP(
@@ -45,8 +53,8 @@ async function fetchPage(url) {
       ["-sL", "--compressed", "-A", BROWSER_UA, url],
       { maxBuffer: 20 * 1024 * 1024 }
     );
-    if (stdout && stdout.length > 500) return { html: stdout, via: "curl" };
-    console.warn("curl returned little/no content; falling back to proxy.");
+    if (looksReal(stdout)) return { html: stdout, via: "curl" };
+    console.warn("curl got a challenge/empty page; falling back to proxy.");
   } catch (e) {
     console.warn(`curl fetch failed (${e.message}); falling back to proxy.`);
   }
@@ -57,7 +65,9 @@ async function fetchPage(url) {
     headers: { "User-Agent": BROWSER_UA, "X-Return-Format": "html" },
   });
   if (!res.ok) throw new Error(`Proxy fetch also failed: HTTP ${res.status}`);
-  return { html: await res.text(), via: "jina-proxy" };
+  const html = await res.text();
+  if (!looksReal(html)) throw new Error("Proxy returned a page with no post links.");
+  return { html, via: "jina-proxy" };
 }
 
 // ---- Extract post links from the page ------------------------------------
