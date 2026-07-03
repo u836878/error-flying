@@ -22,11 +22,13 @@ const execFileP = promisify(execFile);
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SEEN_FILE = join(HERE, "seen.json");
 
-const PAGE_URL = process.env.PAGE_URL || "https://www.secretflying.com/europe-flight-deals/";
-const MATCH = (process.env.MATCH || "ERROR FARE").toUpperCase();
-const TO_EMAIL = process.env.TO_EMAIL;
-const FROM_EMAIL = process.env.FROM_EMAIL || "onboarding@resend.dev";
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// .trim() strips stray whitespace/BOM that shells sometimes add to secrets.
+const env = (k) => (process.env[k] || "").trim();
+const PAGE_URL = env("PAGE_URL") || "https://www.secretflying.com/europe-flight-deals/";
+const MATCH = (env("MATCH") || "ERROR FARE").toUpperCase();
+const TO_EMAIL = env("TO_EMAIL");
+const FROM_EMAIL = env("FROM_EMAIL") || "onboarding@resend.dev";
+const RESEND_API_KEY = env("RESEND_API_KEY");
 
 const BROWSER_UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
